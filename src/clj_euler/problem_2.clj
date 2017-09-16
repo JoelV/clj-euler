@@ -5,13 +5,21 @@
 ;;    r add nth size - 1 nth size -2
 ;;    if r < x
 ;;    (conj  (1 2) r
+(def r (atom [1 2]))
+
 (defn build-fib
   []
-  (let [r (atom [1 2])
-        size (count r) 
-        cur (+ (nth r (dec size))
-               (nth r (- size 2)))]
-    (while (< x cur)
-      (do (swap! r conj cur)
-          (swap!)))))
-  
+  (let [size (count @r) 
+        cur (+ (nth @r (dec size))
+               (nth @r (- size 2)))]
+    (if (< cur 4000000)
+      (do 
+        (swap! r conj cur)
+        (build-fib))
+      @r)))   
+
+
+(defn solution
+  []
+  (reduce + 0 (filter even? (build-fib))))
+
