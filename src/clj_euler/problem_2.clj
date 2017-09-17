@@ -1,23 +1,13 @@
 (ns clj-euler.problem-2)
 
-;; build fib numbers below 10 (1, 2, 3, 5, 8)
-;; begin with (1 2)  
-;;    r add nth size - 1 nth size -2
-;;    if r < x
-;;    (conj  (1 2) r
-(def r (atom [1 2]))
+;; stolen from clj-docs
+(defn fib
+  ([] (fib 1 2))
+  ([a b]  (lazy-seq (cons a (fib b (+ a b))))))
 
 (defn build-fib
   []
-  (let [size (count @r) 
-        cur (+ (nth @r (dec size))
-               (nth @r (- size 2)))]
-    (if (< cur 4000000)
-      (do 
-        (swap! r conj cur)
-        (build-fib))
-      @r)))   
-
+  (take-while #(< % 4000000) (fib)))
 
 (defn solution
   []
